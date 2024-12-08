@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { Header } from "../components/Header";
 import { useAuthStore } from "../store/useAuthStore";
 import { useUserStore } from "../store/useUserStore";
+import LocationComponent from "./Location";
 
 const ProfilePage = () => {
 	const { authUser } = useAuthStore();
@@ -10,6 +11,8 @@ const ProfilePage = () => {
 	const [age, setAge] = useState(authUser.age || "");
 	const [gender, setGender] = useState(authUser.gender || "");
 	const [genderPreference, setGenderPreference] = useState(authUser.genderPreference || []);
+
+	  
 	const [image, setImage] = useState(authUser.image || null);
 
 
@@ -154,6 +157,9 @@ const ProfilePage = () => {
 									))}
 								</div>
 							</div>
+
+							{/* LOCATION */}
+							<LocationComponent/>
 
 							{/* BIO */}
 

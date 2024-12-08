@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
-import { Flame, User, LogOut, Settings, LocateIcon, Menu, LogOutIcon } from "lucide-react";
+import { Flame, User, LogOut, Settings, LocateIcon, Menu, LogOutIcon, MapPin } from "lucide-react";
 import { useUserStore } from "../store/useUserStore";
+import LocationComponent from "../pages/Location";
 
 export const Header = () => {
   const { authUser, logout } = useAuthStore();
@@ -10,26 +11,26 @@ export const Header = () => {
   const [settingsDropdownOpen, setSettingsDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [genderPreference, setGenderPreference] = useState(authUser.genderPreference || []);
-  const [selectedLocations, setSelectedLocations] = useState(authUser.location || []);
+  const [selectedLocations, setSelectedLocations] = useState(authUser.preferredLocation || []); 
   const dropdownRef = useRef(null);
   const settingsDropdownRef = useRef(null);
   const { loading, updateProfile } = useUserStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateProfile({ genderPreference, location: selectedLocations });
+    updateProfile({ genderPreference, preferredLocation: selectedLocations });
   };
 
   const clearFilters = () => {
     setGenderPreference(authUser.genderPreference || []);
-    setSelectedLocations(authUser.location || []);
+    setSelectedLocations(authUser.preferredLocation || []);
   };
 
-  const handleLocationChange = (location) => {
+  const handleLocationChange = (preferredLocation) => {
     setSelectedLocations((prevLocations) =>
-      prevLocations.includes(location)
-        ? prevLocations.filter((loc) => loc !== location)
-        : [...prevLocations, location]
+      prevLocations.includes(preferredLocation)
+        ? prevLocations.filter((loc) => loc !== preferredLocation)
+        : [...prevLocations, preferredLocation]
     );
   };
 
@@ -67,12 +68,14 @@ export const Header = () => {
                     <Settings size={24} className='text-white hover:text-pink-200 transition duration-150 ease-in-out' />
                   </button>
                   {settingsDropdownOpen && (
-                    <div className='absolute  right-[-6rem] mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10'>
+                    <div className='absolute  right-[calc(50%-125px)] mt-2 w-[250px] bg-white rounded-md shadow-lg py-1 z-10'>
                       <div className='px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center'>
-                        <LocateIcon className='mr-2' size={16} />
-                        Location
+                        
+                       
+                        <LocationComponent/>
                       </div>
-                      <div className='flex flex-col px-6 h-[300px] overflow-y-auto'>
+                      <div className='px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center'>  <MapPin className='mr-2' size={16} />Preferred match Location </div>
+                      <div className='flex flex-col px-6 h-[300px] md:h-[200px] lg:h-[200px] overflow-y-auto'>
                               {[
                                 "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno",
                                 "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe", "Imo", "Jigawa",
@@ -125,9 +128,10 @@ export const Header = () => {
                       </div>
                    
                       
+                      <div className="flex space-x-4 items-center justify-center">
                       <button
                         type='submit'
-                        className='w-full flex mt-2 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 
+                        className='w-[40%] flex mt-2 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 
                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500'
                         disabled={loading}
                         onClick={handleSubmit}
@@ -136,13 +140,14 @@ export const Header = () => {
                       </button>
                       <button
                         type='submit'
-                        className='w-full flex justify-center mt-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 
+                        className='w-[40%] flex justify-center mt-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 
                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500'
                         disabled={loading}
                         onClick={clearFilters}
                       >
                         clear filter
                       </button>
+                      </div>
                     </div>
                   )}
                 </div>

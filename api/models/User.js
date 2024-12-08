@@ -31,6 +31,15 @@ const userSchema = new mongoose.Schema(
       enum: ["male", "female", "both"],
     },
     location: {
+      name: {
+        type: String,
+      },
+      isEnabled: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    preferredLocation: {
       type: [String], // Change to an array of strings
       default: ["whole country"],
       enum: [

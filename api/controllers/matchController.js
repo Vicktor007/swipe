@@ -123,7 +123,7 @@ export const getUserProfiles = async (req, res) => {
 				: currentUser.genderPreference,
 		  },
 		  { genderPreference: { $in: [currentUser.gender, "both"] } },
-		  { location: { $in: currentUser.location } }, // Add location filter
+		  { preferredLocation: { $in: currentUser.preferredLocation } }, // Add location filter
 		],
 	  });
   
@@ -141,44 +141,3 @@ export const getUserProfiles = async (req, res) => {
 	}
   };
   
-
-// export const getUserProfiles = async (req, res) => {
-// 	try {
-// 		const currentUser = await User.findById(req.user.id);
-
-// 		const users = await User.find({
-// 			$and: [
-// 				{ _id: { $ne: currentUser.id } },
-// 				{ _id: { $nin: currentUser.likes } },
-// 				{ _id: { $nin: currentUser.dislikes } },
-// 				{ _id: { $nin: currentUser.matches } },
-// 				{
-// 					gender:
-// 						currentUser.genderPreference === "both"
-// 							? { $in: ["male", "female"] }
-// 							: currentUser.genderPreference,
-// 				},
-				
-// 				{ genderPreference: { $in: [currentUser.gender, "both"] } },
-// 			],
-// 		});
-
-// 		res.status(200).json({
-// 			success: true,
-// 			users,
-// 		});
-// 	} catch (error) {
-// 		console.log("Error in getUserProfiles: ", error);
-
-// 		res.status(500).json({
-// 			success: false,
-// 			message: "Internal server error",
-// 		});
-// 	}
-// };
-
-// TODO add age filter
-				// {
-				// 	location:
-				// 	currentUser.location === "whole wide" ? { $in: ["whole wide"] } : { $in: currentUser.location },
-				// }
